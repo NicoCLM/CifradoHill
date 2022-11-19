@@ -15,15 +15,8 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		HashMap<String,Integer> dic = new HashMap<String,Integer>();
-		List<Character> ar = new ArrayList<Character>();
+		List<Integer> num = new ArrayList<Integer>();
 		Scanner sc = new Scanner(System.in);
-		String cadena = "Hola xd";
-		for (int i = 0; i < cadena.length(); i++){
-		    char letra = cadena.charAt(i);
-		    ar.add(letra);
-		    System.out.println(letra);
-		}
-		System.out.println(ar);
 		dic.put("A",0);
 		dic.put("B",1);
 		dic.put("C",2);
@@ -52,6 +45,19 @@ public class Main {
 		dic.put("Y",25);
 		dic.put("Z",26);
 		dic.put(" ",27);
+		
+		String cadena = "HolA xd";
+		for (int i = 0; i < cadena.length(); i++){
+		    char letra = cadena.charAt(i);
+		    letra = Character.toUpperCase(letra);
+		    String a = String.valueOf(letra);
+		    Integer x = dic.get(a);
+		    num.add(x);
+		    System.out.println(letra);
+		}
+		System.out.println("Cifrado: "+num);
+
+		
 		
 		double[][] m = {{7,8,9},{7,87,79},{78,89,90}};
 		RealMatrix ma = new Array2DRowRealMatrix(m);
