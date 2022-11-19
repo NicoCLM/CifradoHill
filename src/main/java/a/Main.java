@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.apache.commons.math.linear.RealMatrix;
-import org.ejml.simple.SimpleMatrix;
 
 public class Main {
 

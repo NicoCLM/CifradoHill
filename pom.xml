@@ -4,11 +4,6 @@
   <artifactId>CifradoHill</artifactId>
   <version>0.0.1-SNAPSHOT</version>
     <dependencies>
-  	<dependency>
-  		<groupId>org.ejml</groupId>
-  		<artifactId>ejml-all</artifactId>
-  		<version>0.41</version>
-	</dependency>
 	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math -->
 <dependency>
     <groupId>org.apache.commons</groupId>
