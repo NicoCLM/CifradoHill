@@ -1,7 +1,10 @@
 package a;
 
 
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
@@ -12,8 +15,15 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		HashMap<String,Integer> dic = new HashMap<String,Integer>();
+		List<Character> ar = new ArrayList<Character>();
 		Scanner sc = new Scanner(System.in);
-		
+		String cadena = "Hola xd";
+		for (int i = 0; i < cadena.length(); i++){
+		    char letra = cadena.charAt(i);
+		    ar.add(letra);
+		    System.out.println(letra);
+		}
+		System.out.println(ar);
 		dic.put("A",0);
 		dic.put("B",1);
 		dic.put("C",2);
@@ -47,8 +57,6 @@ public class Main {
 		RealMatrix ma = new Array2DRowRealMatrix(m);
 		System.out.println("Determinante: "+ma.getDeterminant());
 		RealMatrix tra = ma.inverse();
-		
-		
 		
 		for(int i=0; i < ma.getColumnDimension();i++) {
 			for(int j=0;j<ma.getRowDimension();j++) {
