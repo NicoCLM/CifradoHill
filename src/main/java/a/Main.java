@@ -45,8 +45,8 @@ public class Main {
 		dic.put("Y",25);
 		dic.put("Z",26);
 		dic.put(" ",27);
-		
-		String cadena = "HolA xd";
+		int bloque = 3;
+		String cadena = "hey menes";
 		for (int i = 0; i < cadena.length(); i++){
 		    char letra = cadena.charAt(i);
 		    letra = Character.toUpperCase(letra);
@@ -55,21 +55,53 @@ public class Main {
 		    num.add(x);
 		    System.out.println(letra);
 		}
-		System.out.println("Cifrado: "+num);
+		System.out.println("mensaje en numeros: "+num);
 
-		
-		
-		double[][] m = {{7,8,9},{7,87,79},{78,89,90}};
-		RealMatrix ma = new Array2DRowRealMatrix(m);
-		System.out.println("Determinante: "+ma.getDeterminant());
-		RealMatrix tra = ma.inverse();
-		
-		for(int i=0; i < ma.getColumnDimension();i++) {
-			for(int j=0;j<ma.getRowDimension();j++) {
-				System.out.println("p ["+i+"] ["+ j +"]: "+tra.getData()[i][j]);
+		double[][] palabra = new double[bloque][bloque];
+		int r = 0;
+		if(cadena.length()<=bloque*bloque) {
+			for(int i =0; i<palabra.length;i++) {
+				for(int n =0; n<palabra.length;n++) {
+					if(r < num.size()) {
+					palabra[i][n]= num.get(r);
+					r++;
+					}
+				}
 			}
 		}
-		
+		else {
+			System.out.println("el mensaje supero el limite porfavor aumente la matris o mande un mesaje igual a las dimenciones o menor");
+		}
+		RealMatrix mb = new Array2DRowRealMatrix(palabra);
+		double[][] m = {{1,0,1},{1,2,1},{1,1,4}};
+		RealMatrix ma = new Array2DRowRealMatrix(m);
+		double determinante = ma.getDeterminant();
+		System.out.println("Determinante: "+determinante);
+		if(determinante !=0 && determinante%28 !=0 && 28%determinante !=0) {
+			RealMatrix tra = ma.inverse();
+			for(int i=0; i < ma.getColumnDimension();i++) {
+				for(int j=0;j<ma.getRowDimension();j++) {
+					System.out.println("p ["+i+"] ["+ j +"]: "+tra.getData()[i][j]);
+				}
+			}
+			RealMatrix multiplicacion = mb.multiply(ma);
+			System.out.println("la multiplicacion de las matrices "+multiplicacion);
+			double numero;
+			double[][] Encriptado = new double[bloque][bloque];
+			for(int i =0;i<bloque;i++) {
+				for(int j =0;j<bloque;j++) {
+					numero=multiplicacion.getEntry(i, j);
+					numero = numero%28;
+					Encriptado[i][j] =numero;
+				}
+			}
+			RealMatrix MatrixCifrada = new Array2DRowRealMatrix(Encriptado);
+			System.out.println("la matrix encriptada es "+MatrixCifrada);
+		}
+		else {
+			System.out.println("la matris no es util porque la determinante no comple con lo requerido");
+		}
+
 	}
 
 }
