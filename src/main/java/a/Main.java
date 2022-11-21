@@ -10,6 +10,10 @@ import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.apache.commons.math.linear.RealMatrix;
 
 public class Main {
+	/*
+	 * # Piza, Hernandez, Villarreal, Camacho 
+	 * # Encriptado y Desencriptado de Hill
+	 */
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
