@@ -70,6 +70,10 @@ public class Main {
 				System.out.println("  El tamaño no puede ser 1!");
 				n1 = "";
 			}
+			if(n1.length() >= 999) {
+				System.out.println("  El número no puede ser tan grande!");
+				n1 = "";
+			}
 		}
 		bloque = Integer.parseInt(n1);
 		double[][] m = new double[bloque][bloque];
@@ -160,7 +164,7 @@ public class Main {
 		double[][] palabra = new double[bloque][(num.size()/bloque)+1];
 		int r = 0;
 		if(cadena.length()<=((num.size()/bloque)+1)*bloque) {
-			for(int i =0; i<palabra.length;i++) {
+			for(int i =0; i<((num.size()/bloque)+1);i++) {
 				for(int n =0; n<palabra.length;n++) {
 					if(r < num.size()) {
 					palabra[n][i]= num.get(r);
@@ -212,19 +216,22 @@ public class Main {
 			//Decifrado
 			int[][] decifrada = new int[des.getRowDimension()][des.getColumnDimension()];
 			int ra = 0;
-			for (int i = 0; i < des.getRowDimension(); i++) {
-				for (int j = 0; j < des.getColumnDimension(); j++) {
-					inver.add((int) (des.getRow(i)[j]+0.5));
+			for (int i = 0; i < des.getColumnDimension(); i++) {
+				for (int j = 0; j < des.getRowDimension(); j++) {
+					inver.add((int) (des.getRow(j)[i]+0.5));
 				}
 			}
+			System.out.println(inver);
 			for(int i =0; i<decifrada.length;i++) {
 				for(int n =0; n<decifrada.length;n++) {
 					if(ra < inver.size()) {
 						decifrada[i][n]= inver.get(ra);
 						ra++;
+						
 					}
 				}
 			}
+			
 			//Imprimo matriz luego de la multiplicación de matriz cifrada con la inversa de la clave
 			System.out.println("la matrix Desencriptada es: "+des);
 			imprimir3(decifrada);
@@ -256,7 +263,7 @@ public class Main {
 	}
 	public static void imprimir2(double[][] palabra) {
 		for (int i = 0; i < palabra.length; i++) {
-			for (int j = 0; j < palabra[0].length; j++) {
+			for (int j = 0; j < palabra[i].length; j++) {
 				System.out.print(palabra[i][j]+" | ");
 				if(j==palabra[0].length-1) {
 					System.out.println();
