@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
-import org.apache.commons.math.linear.LUDecompositionImpl;
-import org.apache.commons.math.linear.MatrixUtils;
 import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.linear.RealMatrixImpl;
 
 public class Main {
 
@@ -70,7 +67,7 @@ public class Main {
 				System.out.println("  El tamaño no puede ser 1!");
 				n1 = "";
 			}
-			if(n1.length() >= 999) {
+			if(n1.length() >= 4) {
 				System.out.println("  El número no puede ser tan grande!");
 				n1 = "";
 			}
@@ -101,7 +98,7 @@ public class Main {
 				}
 			}
 			if(lim.length()>=bloque*bloque) {
-				System.out.println("El mensaje supero el limite porfavor aumente la matris o mande un mesaje igual a las dimenciones o menor!");
+				System.out.println("  El mensaje supero el limite porfavor aumente la matriz o mande un mesaje igual a las dimenciones o menor!");
 				lim = "";
 				cla.clear();
 			}
@@ -118,19 +115,20 @@ public class Main {
 				}
 			}
 			else {
-				System.out.println("el mensaje supero el limite porfavor aumente la matris o mande un mesaje igual a las dimenciones o menor");
+				System.out.println("el mensaje supero el limite porfavor aumente la matriz o mande un mesaje igual a las dimenciones o menor");
 			}
 
 			RealMatrix ma = new Array2DRowRealMatrix(m);
 			double determinante = ma.getDeterminant();
 			System.out.println("Determinante: "+determinante);
-			if(determinante !=0 && determinante%28 !=0 && 28%determinante !=0) {
+			if(determinante !=0 && determinante%28 !=0 && 28%determinante !=0 && determinante%2 !=0) {
 			}else {
-				System.out.println("La matris no es util porque la determinante no comple con lo requerido");
+				System.out.println("  La matriz no es util porque la determinante no comple con lo requerido");
 				System.out.println("------------------------------------------------------");
 				lim = "";
 				cla.clear();
 			}
+			
 		}
 		
 		System.out.println("Su clave es: "+cla);
@@ -161,10 +159,19 @@ public class Main {
 		// palabra cifrada dic
 		System.out.println("\nMensaje en numeros: "+num);
 		//Palabra cifrada en la matriz
-		double[][] palabra = new double[bloque][(num.size()/bloque)+1];
+		int tama = (num.size()/bloque)+1;
+		if(tama < 3) {
+			tama = 3;
+		}else {
+			tama = (num.size()/bloque)+1;
+		}
+		double[][] palabra = new double[bloque][tama];
 		int r = 0;
-		if(cadena.length()<=((num.size()/bloque)+1)*bloque) {
-			for(int i =0; i<((num.size()/bloque)+1);i++) {
+		for (double[] row : palabra) {
+            Arrays.fill(row, 27);
+		}
+		if(cadena.length()<=(tama)*bloque) {
+			for(int i =0; i<(tama);i++) {
 				for(int n =0; n<palabra.length;n++) {
 					if(r < num.size()) {
 					palabra[n][i]= num.get(r);
@@ -174,15 +181,13 @@ public class Main {
 			}
 		}
 		else {
-			System.out.println("el mensaje supero el limite porfavor aumente la matris o mande un mesaje igual a las dimenciones o menor");
+			System.out.println("el mensaje supero el limite porfavor aumente la matriz o mande un mesaje igual a las dimenciones o menor");
 		}
-		
+
 		imprimir2(palabra);
 		RealMatrix mb = new Array2DRowRealMatrix(palabra);
 		RealMatrix ma = new Array2DRowRealMatrix(m);
 		double determinante = ma.getDeterminant();
-		System.out.println("Determinante: "+determinante);
-		System.out.println("------------------------------------------------------");
 		//Revisar si la clave nos funciona o no
 		if(determinante !=0 && determinante%28 !=0 && 28%determinante !=0) {
 			RealMatrix tra = ma.inverse();
@@ -211,21 +216,23 @@ public class Main {
 			RealMatrix des = inve.multiply(multiplicacion);
 			//Imprimo matriz cifrada
 			RealMatrix matrixCifrada = new Array2DRowRealMatrix(Encriptado);
-			System.out.println("la matrix encriptada es "+matrixCifrada);
+			System.out.println("la matriz encriptada es "+matrixCifrada);
 			imprimir(matrixCifrada);
 			//Decifrado
 			int[][] decifrada = new int[des.getRowDimension()][des.getColumnDimension()];
+			for (int[] row : decifrada) {
+	            Arrays.fill(row, 27);
+			}
 			int ra = 0;
 			for (int i = 0; i < des.getColumnDimension(); i++) {
 				for (int j = 0; j < des.getRowDimension(); j++) {
 					inver.add((int) (des.getRow(j)[i]+0.5));
 				}
 			}
-			System.out.println(inver);
-			for(int i =0; i<decifrada.length;i++) {
+			for(int i =0; i<decifrada[0].length;i++) {
 				for(int n =0; n<decifrada.length;n++) {
 					if(ra < inver.size()) {
-						decifrada[i][n]= inver.get(ra);
+						decifrada[n][i]= inver.get(ra);
 						ra++;
 						
 					}
@@ -233,7 +240,7 @@ public class Main {
 			}
 			
 			//Imprimo matriz luego de la multiplicación de matriz cifrada con la inversa de la clave
-			System.out.println("la matrix Desencriptada es: "+des);
+			System.out.println("la matriz Desencriptada es: "+des);
 			imprimir3(decifrada);
 			System.out.println("Mensaje Desencriptado: ");
 			for(int i=0;i<inver.size();i++) {
@@ -242,8 +249,9 @@ public class Main {
 			
 		}
 		else {
-			System.out.println("la matris no es util porque la determinante no comple con lo requerido");
+			System.out.println("la matriz no es util porque la determinante no comple con lo requerido");
 		}
+		sc.close();
 		
 	}catch(NoSuchElementException e) {
 			
@@ -267,7 +275,7 @@ public class Main {
 				System.out.print(palabra[i][j]+" | ");
 				if(j==palabra[0].length-1) {
 					System.out.println();
-				}				
+				}
 			}
 		}
 		System.out.println("------------------------------------------------------");
@@ -278,7 +286,7 @@ public class Main {
 				System.out.print(decifrada[i][j]+" | ");
 				if(j==decifrada[0].length-1) {
 					System.out.println();
-				}				
+				}
 			}
 		}
 		System.out.println("------------------------------------------------------");
