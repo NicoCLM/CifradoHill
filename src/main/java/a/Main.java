@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import org.apache.commons.math.linear.Array2DRowRealMatrix;
-import org.apache.commons.math.linear.RealMatrix;
-import org.ejml.simple.SimpleMatrix;
+
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
+
 
 public class Main {
 	/*
@@ -113,7 +115,7 @@ public class Main {
 				RealMatrix ma = new Array2DRowRealMatrix(m);
 				System.out.println(ma);
 				
-				determinante = ma.getDeterminant();
+				determinante = (new LUDecomposition(ma).getDeterminant());
 				System.out.println("Determinante: "+determinante);
 				if(determinante !=0 && determinante%28 !=0 && 28%determinante !=0 && determinante%2 !=0) {
 				}else {
@@ -192,13 +194,12 @@ public class Main {
 		}
 
 		imprimir2(palabra);
-		SimpleMatrix a;
 		RealMatrix mb = new Array2DRowRealMatrix(palabra);
 		RealMatrix ma = new Array2DRowRealMatrix(m);
-		double determinante = ma.getDeterminant();
+		double determinante = (new LUDecomposition(ma).getDeterminant());
 		//Revisar si la clave nos funciona o no
 		if(determinante !=0 && determinante%28 !=0 && 28%determinante !=0) {
-			RealMatrix tra = ma.inverse();
+			RealMatrix tra = (new LUDecomposition(ma).getSolver().getInverse());
 			for(int i=0; i < ma.getColumnDimension();i++) {
 				for(int j=0;j<ma.getRowDimension();j++) {
 					//System.out.println("p ["+i+"] ["+ j +"]: "+tra.getData()[i][j]);
@@ -219,7 +220,7 @@ public class Main {
 				}
 			}
 			//Inversa de la matriz Clave
-			RealMatrix inve = ma.inverse();
+			RealMatrix inve = (new LUDecomposition(ma).getSolver().getInverse());
 			System.out.println("Inversa");
 			imprimir(inve);
 			//Multiplico la inversa de la matriz clave por el mensaje cifrado
@@ -229,24 +230,30 @@ public class Main {
 			System.out.println("la matriz encriptada es "+matrixCifrada);
 			imprimir(matrixCifrada);
 			//Decifrado
-			System.out.println("invMod "+invMod(determinante));
+			
 			//cofactor + Inversa Modular + Mod28
 			RealMatrix cof = inve.scalarMultiply(determinante);
 			int dete = invMod(determinante);
 			double[][] co = new double[bloque][bloque];
 			for(int i=0; i<co.length;i++) {
 				for(int j=0; j<co.length; j++) {
-					co[j][i] = (cof.getEntry(j, i)*dete);
-				}
-			}
-			System.out.println("invaaa");
-			imprimir2(co);
-			for(int i=0; i<co.length;i++) {
-				for(int j=0; j<co.length; j++) {
-					co[j][i] = co[j][i]%28;
+					//co[j][i] = (int)(cof.getEntry(j, i)*dete);
+					if(cof.getEntry(j, i) <0) {
+						co[j][i] = (int)((cof.getEntry(j, i)*dete)-0.9);
+					}
+					if(cof.getEntry(j, i) >= 0) {
+						co[j][i] = (int)((cof.getEntry(j, i)*dete)+0.9);
+					}
 				}
 			}
 			System.out.println("Cofactor");
+			imprimir2(co);
+			for(int i=0; i<co.length;i++) {
+				for(int j=0; j<co.length; j++) {
+					co[j][i] = Math.floorMod((int) co[j][i], 28);
+				}
+			}
+			System.out.println("Mod 28");
 			imprimir2(co);
 			RealMatrix cofactor = new Array2DRowRealMatrix(co);
 			RealMatrix multiCof = cofactor.multiply(matrixCifrada);
@@ -256,6 +263,8 @@ public class Main {
 					desc[j][i] =(int)(multiCof.getEntry(j, i));
 				}
 			}
+			System.out.println("Mensaje cofactor");
+			imprimir3(desc);
 			for(int i=0; i<((num.size()/bloque)+1);i++) {
 				for(int j=0; j<desc.length; j++) {
 					desc[j][i] = desc[j][i]%28;
