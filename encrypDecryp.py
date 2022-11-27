@@ -105,19 +105,19 @@ modclavemat = int(np.linalg.det(np.transpose(keyMatrix(clave, matx)))) % 26
 print(find_mod_inv(modclavemat, 26))
 
 if int(np.linalg.det(np.array(keyMatrix(clave, matx))) + 0.5) % 2 == 0:
-    print("L7a clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
+    print("La clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
     sys.exit()
 if int(np.linalg.det(np.array(keyMatrix(clave, matx)))) == 0:
-    print("L6a clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
+    print("La clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
     sys.exit()
 if int(np.linalg.det(np.array(keyMatrix(clave, matx)))) % 26 == 0:
-    print("5La clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
+    print("La clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
     sys.exit()
 if 26 % int(np.linalg.det(np.array(keyMatrix(clave, matx)))) == 0:
-    print("4La clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
+    print("La clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
     sys.exit()
 if find_mod_inv(modclavemat, 26) == None:
-    print("1La clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
+    print("La clave ingresada no cumple con los requisitos ya que la determinante es igual a 0. Ingrese los datos de nuevo (Ejecute de nuevo el programa)")
     sys.exit()
 
 
