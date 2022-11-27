@@ -294,6 +294,5 @@ public class Main {
 	}catch(NoSuchElementException e) {
 			
 		}
-
 	}
 }
