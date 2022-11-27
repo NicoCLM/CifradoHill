@@ -27,7 +27,7 @@ public class Main {
 		List<Integer> cla = new ArrayList<Integer>();
 		List<Integer> inver = new ArrayList<Integer>();
 		Scanner sc = new Scanner(System.in);
-		//Diccionario
+		//Diccionarios
 		dic.put("A",0);		dic2.put(0,"A");
 		dic.put("B",1);		dic2.put(1,"B");
 		dic.put("C",2);		dic2.put(2,"C");
@@ -63,7 +63,7 @@ public class Main {
 		//Palabra clave
 		double[][] m = null;
 		while(lim.isEmpty()) {
-			System.out.println("Inserte la palabra calve: ");
+			System.out.println("Inserte la palabra clave: ");
 			lim = sc.nextLine();
 			//Transforma palabra a números
 			for (int i = 0; i < lim.length(); i++){
@@ -84,7 +84,7 @@ public class Main {
 				}
 			}
 			if(lim.length() > 9 || lim.length() < 4) {
-				System.out.println("  El mensaje supero el limite!");
+				System.out.println("  El mensaje no cumple con el limite(4 o 9)!");
 				lim = "";
 				cla.clear();
 			}
@@ -109,7 +109,9 @@ public class Main {
 			}
 
 			else {
-				System.out.println("el mensaje supero el limite porfavor aumente la matriz o mande un mesaje igual a las dimenciones o menor");
+				System.out.println(" El mensaje supero el limite porfavor aumente la matriz o desminuya, mande un mesaje igual a las dimenciones");
+				lim = "";
+				cla.clear();
 			}
 			double determinante = 0;
 			if(!lim.isEmpty()) {
@@ -129,8 +131,6 @@ public class Main {
 			
 			
 			if(pri.invMod(determinante) == 0) {
-				System.out.println();
-				System.out.println(pri.invMod(determinante));
 				System.out.println("  La matriz no es util porque la determinante no comple con lo requerido");
 				System.out.println("------------------------------------------------------");
 				lim = "";
@@ -175,9 +175,11 @@ public class Main {
 		}
 		double[][] palabra = new double[bloque][tama];
 		int r = 0;
+		//Se rellena ma matriz con 27 que es el vacío
 		for (double[] row : palabra) {
             Arrays.fill(row, 27);
 		}
+		//Se ponen los valores de la palabra cifrada dentro de la matriz
 		if(cadena.length()<=(tama)*bloque) {
 			for(int i =0; i<(tama);i++) {
 				for(int n =0; n<palabra.length;n++) {
@@ -188,10 +190,7 @@ public class Main {
 				}
 			}
 		}
-		else {
-			System.out.println("el mensaje supero el limite porfavor aumente la matriz o mande un mesaje igual a las dimenciones o menor");
-		}
-
+		//Se imprime la matriz con el mensaje
 		pri.imprimir2(palabra);
 		RealMatrix mb = new Array2DRowRealMatrix(palabra);
 		RealMatrix ma = new Array2DRowRealMatrix(m);
@@ -199,36 +198,31 @@ public class Main {
 		//Revisar si la clave nos funciona o no
 		if(determinante !=0 && determinante%28 !=0 && 28%determinante !=0) {
 			RealMatrix tra = (new LUDecomposition(ma).getSolver().getInverse());
-			for(int i=0; i < ma.getColumnDimension();i++) {
-				for(int j=0;j<ma.getRowDimension();j++) {
-					//System.out.println("p ["+i+"] ["+ j +"]: "+tra.getData()[i][j]);
-				}
-			}
 			//realiza multiplicación de matrices
 			RealMatrix multiplicacion = ma.multiply(mb);
-			System.out.println("la multiplicacion de las matrices: ");
+			System.out.println("Multiplicacion de las matrices clave y el mensaje a cifrar: ");
 			pri.imprimir(multiplicacion);
 			double numero;
 			//Modulo 28 a la multiplicación de matrices
-			double[][] Encriptado = new double[bloque][((num.size()/bloque)+1)];
+			double[][] encriptado = new double[bloque][((num.size()/bloque)+1)];
 			for(int i =0;i<bloque;i++) {
 				for(int j =0;j<((num.size()/bloque)+1);j++) {
 					numero=multiplicacion.getEntry(i, j);
 					numero = numero%28;
-					Encriptado[i][j] =numero;
+					encriptado[i][j] =numero;
 				}
 			}
 			//Inversa de la matriz Clave
 			RealMatrix inve = (new LUDecomposition(ma).getSolver().getInverse());
-			System.out.println("Inversa");
+			System.out.println("Inversa de la matriz clave: ");
 			pri.imprimir(inve);
 			//Multiplico la inversa de la matriz clave por el mensaje cifrado
 			RealMatrix des = inve.multiply(multiplicacion);
 			//Imprimo matriz cifrada
-			RealMatrix matrixCifrada = new Array2DRowRealMatrix(Encriptado);
-			System.out.println("la matriz encriptada es ");
+			RealMatrix matrixCifrada = new Array2DRowRealMatrix(encriptado);
+			System.out.println("La matriz encriptada es: ");
 			pri.imprimir(matrixCifrada);
-			
+			//Mensaje cifrado
 			System.out.println("Mensaje Encriptado: ");
 			for(int i=0; i < matrixCifrada.getColumnDimension();i++) {
 				for(int j=0;j<matrixCifrada.getRowDimension();j++) {
@@ -253,6 +247,12 @@ public class Main {
 					}
 				}
 			}
+			
+			//Inversa Multiplicativa modular
+			System.out.println("Inversa Multiplicativa Modular: ");
+			System.out.println(pri.invMod(determinante));
+			System.out.println("------------------------------------------------------");
+			//Cofactor
 			System.out.println("Cofactor");
 			pri.imprimir2(co);
 			for(int i=0; i<co.length;i++) {
@@ -260,6 +260,7 @@ public class Main {
 					co[j][i] = Math.floorMod((int) co[j][i], 28);
 				}
 			}
+			//Modulo 28 a la matriz cofactor
 			System.out.println("Mod 28");
 			pri.imprimir2(co);
 			RealMatrix cofactor = new Array2DRowRealMatrix(co);
@@ -270,7 +271,8 @@ public class Main {
 					desc[j][i] =(int)(multiCof.getEntry(j, i));
 				}
 			}
-			System.out.println("Mensaje cofactor");
+			//Se multiplica el cofactor de la matriz clave con el la matriz del mensaje cifrado
+			System.out.println("Mensaje cofactor por el mensaje cifrado");
 			pri.imprimir3(desc);
 			for(int i=0; i<((num.size()/bloque)+1);i++) {
 				for(int j=0; j<desc.length; j++) {
@@ -286,9 +288,6 @@ public class Main {
 				System.out.print(dic2.get(inver.get(i)));
 			}
 			
-		}
-		else {
-			System.out.println("la matriz no es util porque la determinante no comple con lo requerido");
 		}
 		sc.close();
 		
